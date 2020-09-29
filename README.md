@@ -1,5 +1,5 @@
 # nguan
-e**N**gine that create by a **G**raduate and a **U**ndergraduate student for **A**nalyze **N**etwork traffic (temporary codename)
+e**NG**ine for **U**biquitous  **A**nalysis of **N**etwork traffics (temporary codename)
 
 ## Project setup
 ```
