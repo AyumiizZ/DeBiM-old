@@ -4,6 +4,7 @@
     <!-- <font-awesome-icon icon="user-secret" /> -->
     <NavBar />
     <SideBar />
+    <TestChart/>
     <main id="page-wrap">
       <!-- <div id="nav">
       <router-link to="/">Home</router-link> |
@@ -18,10 +19,12 @@
 <script>
 import NavBar from '@/components/NavBar'
 import SideBar from '@/components/SideBar'
+import TestChart from './components/TestChart.vue'
 export default {
   components: {
     NavBar,
-    SideBar
+    SideBar,
+    TestChart
   },
   data() {
     return {
@@ -38,6 +41,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  
 }
 .home {
   background-color: white;
