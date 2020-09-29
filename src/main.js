@@ -3,20 +3,28 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-// add bootstrap-vue
+// Add bootstrap-vue
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
-// Install BootstrapVue
 Vue.use(BootstrapVue)
-// Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
-
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+// END add bootstrap-vue
 
-// add side bar menu
-import VueSidebarMenu from 'vue-sidebar-menu'
-import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
-Vue.use(VueSidebarMenu)
+// Add vue-sidebar-menu
+// import VueSidebarMenu from 'vue-sidebar-menu'
+// import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
+// Vue.use(VueSidebarMenu)
+// END add vue-sidebar-menu
+
+// Add font-awesome
+// Font Awesome by Dave Gandy - http://fontawesome.io
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+library.add(faUserSecret)
+Vue.component('font-awesome-icon', FontAwesomeIcon)
+// END Add font-awesome
 
 Vue.config.productionTip = false
 

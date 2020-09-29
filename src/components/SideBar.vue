@@ -1,39 +1,27 @@
 <template>
-  <sidebar-menu :menu="menu" />
+  <Push :closeOnNavigation="true">
+    <router-link to="/"><span>Home</span></router-link>
+    <router-link to="/about"><span>Home</span></router-link>
+  </Push>
 </template>
 
 <script>
-import { SidebarMenu } from 'vue-sidebar-menu'
+import { Push } from 'vue-burger-menu'
+
 export default {
   components: {
-    SidebarMenu
-  },
-  data() {
-    return {
-      menu: [
-        {
-          header: true,
-          title: 'Main Navigation',
-          hiddenOnCollapse: true
-        },
-        {
-          href: '/',
-          title: 'Dashboard',
-          icon: 'fa fa-user'
-        },
-        {
-          href: '/charts',
-          title: 'Charts',
-          icon: 'fa fa-chart-area',
-          child: [
-            {
-              href: '/charts/sublink',
-              title: 'Sub Link'
-            }
-          ]
-        }
-      ]
-    }
+    Push
   }
 }
 </script>
+
+<style>
+.bm-burger-button {
+  position: absolute;
+  cursor: pointer;
+  height: 20px;
+  left: 25px;
+  top: 18px;
+  width: 36px;
+}
+</style>

@@ -1,14 +1,17 @@
 <template>
   <div id="app">
     <!-- <b-button v-b-toggle.sidebar-1>Toggle Sidebar</b-button> -->
-
-    <SideBar />
+    <!-- <font-awesome-icon icon="user-secret" /> -->
     <NavBar />
-    <!-- <div id="nav">
+    <SideBar />
+    <main id="page-wrap">
+      <!-- <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div> -->
-    <router-view />
+      <!-- <NavBar /> -->
+      <router-view />
+    </main>
   </div>
 </template>
 
@@ -35,5 +38,8 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+.home {
+  background-color: white;
 }
 </style>
