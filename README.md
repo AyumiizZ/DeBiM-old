@@ -1,5 +1,5 @@
 # nguan
-**N**umerical and **G**raph base website for Ubiquitous Analysis of Network traffics for **U**biquitous  **A**nalysis of **N**etwork traffics (temporary codename)
+**N**umerical and **G**raph base website for **U**biquitous  **A**nalysis of **N**etwork traffics (temporary codename)
 
 ## Project setup
 ```
