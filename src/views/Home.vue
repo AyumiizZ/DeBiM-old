@@ -4,12 +4,8 @@
       <b-row>
         <b-col sm="12">
           <div>
-            <b-jumbotron
-              header="BootstrapVue"
-              lead="Bootstrap v4 Components for Vue.js 2"
-            >
-              <p>For more information visit website</p>
-              <b-button variant="primary" href="#">More Info</b-button>
+            <b-jumbotron>
+              <TestChart />
             </b-jumbotron>
           </div>
         </b-col>
@@ -60,10 +56,11 @@
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
 
+import TestChart from '@/components/TestChart.vue'
 export default {
   name: 'Home',
   components: {
-    // HelloWorld
+    TestChart
   },
   mounted: () => {
     console.log('home')

@@ -2,6 +2,12 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import Echarts from 'vue-echarts'
+import 'echarts/lib/chart/bar'
+import 'echarts/lib/component/title'
+import 'echarts/lib/chart/line'
+
+Vue.component('chart', Echarts)
 
 // Add bootstrap-vue
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'

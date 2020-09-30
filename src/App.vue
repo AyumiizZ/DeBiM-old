@@ -2,6 +2,7 @@
   <div id="app">
     <NavBar />
     <SideBar />
+    <TestChart />
     <main id="page-wrap">
       <router-view />
     </main>
