@@ -2,14 +2,53 @@
   <div class="home">
     <b-container class="bv-example-row">
       <b-row>
-        <b-col sm="8">col-sm-8</b-col>
-        <b-col sm="4">col-sm-4</b-col>
+        <b-col sm="12">
+          <div>
+            <b-jumbotron
+              header="BootstrapVue"
+              lead="Bootstrap v4 Components for Vue.js 2"
+            >
+              <p>For more information visit website</p>
+              <b-button variant="primary" href="#">More Info</b-button>
+            </b-jumbotron>
+          </div>
+        </b-col>
       </b-row>
 
       <b-row>
-        <b-col sm>col-sm</b-col>
-        <b-col sm>col-sm</b-col>
-        <b-col sm>col-sm</b-col>
+        <b-col sm="4">
+          <div>
+            <b-jumbotron
+              header="Graph"
+              lead="Bootstrap v4 Components for Vue.js 2"
+            >
+              <p>For more information visit website</p>
+              <b-button variant="primary" href="#">More Info</b-button>
+            </b-jumbotron>
+          </div>
+        </b-col>
+        <b-col sm="4">
+          <div>
+            <b-jumbotron
+              header="Graph"
+              lead="Bootstrap v4 Components for Vue.js 2"
+            >
+              <p>For more information visit website</p>
+              <b-button variant="primary" href="#">More Info</b-button>
+            </b-jumbotron>
+          </div>
+        </b-col>
+        <b-col sm="4">
+          <div>
+            <b-jumbotron
+              header="Graph"
+              lead="Bootstrap v4 Components for Vue.js 2"
+            >
+              <p>For more information visit website</p>
+              <b-button variant="primary" href="#">More Info</b-button>
+            </b-jumbotron>
+          </div>
+        </b-col>
       </b-row>
     </b-container>
     <!-- <img alt="Vue logo" src="../assets/logo.png" /> -->
@@ -25,12 +64,11 @@ export default {
   name: 'Home',
   components: {
     // HelloWorld
+  },
+  mounted: () => {
+    console.log('home')
   }
 }
 </script>
 
-<style scoped>
-.home {
-  background-color: white;
-}
-</style>
+<style scoped></style>
