@@ -28,8 +28,19 @@ export default {
   },
   data() {
     return {
-      showSideBar: false
+      query: '',
+      data: []
     }
+  },
+  methods: {
+    search() {
+        axios.get("http://192.168.1.109:9200/result/_search? + this.query)
+              .then(response => {
+                console.log(response.data);
+                this.data = response.data;
+          })
+    }
+  }
   }
 }
 </script>
@@ -41,7 +52,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  
 }
 .home {
   background-color: white;

@@ -6,6 +6,10 @@ import Echarts from 'vue-echarts';
 import 'echarts/lib/chart/bar';
 import 'echarts/lib/component/title';
 import 'echarts/lib/chart/line';
+import axios from 'axios';
+import VueAxios from 'vue-axios';
+
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 
 Vue.component('chart', Echarts);
 
@@ -29,6 +33,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 library.add(faUserSecret)
+Vue.use(axios, VueAxios);
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 // END Add font-awesome
 
