@@ -2,7 +2,7 @@
   <div id="app">
     <NavBar />
     <SideBar />
-    <TestChart />
+    <!-- <TestChart /> -->
     <main id="page-wrap">
       <router-view />
     </main>
@@ -12,10 +12,12 @@
 <script>
 import NavBar from '@/components/NavBar'
 import SideBar from '@/components/SideBar'
+// import TestChart from '@/components/TestChart'
 export default {
   components: {
     NavBar,
     SideBar
+    // TestChart
   },
   data() {
     return {
