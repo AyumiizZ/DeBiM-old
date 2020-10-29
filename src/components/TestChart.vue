@@ -1,75 +1,62 @@
 <template>
-  <div>
-    <!-- <div class="chart-wrapper">
-  <chart :options="chartOptionsBar"></chart>
-</div> -->
-    <hr />
-    <div class="chart-wrapper">
-      <chart :options="chartOptionsLine"></chart>
-    </div>
+  <div class="echarts">
+    <IEcharts :option="line" />
+    <button @click="addData">Random</button>
   </div>
 </template>
 
-<script>
+<script type="text/babel">
+import IEcharts from 'vue-echarts-v3/src/full.js'
 export default {
-  name: 'Test',
+  name: 'view',
+  components: {
+    IEcharts
+  },
+  props: {},
   data: () => ({
-    chartOptionsBar: {
-      xAxis: {
-        data: ['Jan', 'Feb', 'Mar', 'Apr']
-      },
-      yAxis: {
-        type: 'value'
-      },
-      series: [
-        {
-          type: 'bar',
-          data: [63, 75, 24, 92]
-        }
-      ],
+    line: {
       title: {
-        text: 'Sales Results',
-        x: 'center',
-        textStyle: {
-          fontSize: 24
-        }
+        text: 'Wifi Usage'
       },
-      color: ['#127ac2']
-    },
-    chartOptionsLine: {
+      tooltip: {},
       xAxis: {
-        data: ['Jan', 'Feb', 'Mar', 'Apr']
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
       },
-      yAxis: {
-        type: 'value'
-      },
+      yAxis: { type: 'value' },
       series: [
+        // {
+        //   name: 'Sales',
+        //   type: 'bar',
+        //   data: [5, 20, 36, 10, 10, 20]
+        // }
         {
-          type: 'line',
-          data: [63, 75, 24, 92]
+          data: [820, 932, 901, 934, 1290, 1330, 1320],
+          type: 'line'
         }
-      ],
-      title: {
-        text: 'Sales Results',
-        x: 'center',
-        textStyle: {
-          fontSize: 24
-        }
-      },
-      color: ['#127ac2']
+      ]
     }
-  })
+  }),
+  methods: {
+    addData() {
+      // const that = this
+      this.line.xAxis.data.push('Rand')
+      this.line.series[0].data.push(Math.floor(Math.random() * 1000 + 800))
+    },
+    doRandom() {
+      const that = this
+      let data = []
+      for (let i = 0, min = 5, max = 99; i < 6; i++) {
+        data.push(Math.floor(Math.random() * (max + 1 - min) + min))
+      }
+      that.bar.series[0].data = data
+    }
+  }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.chart-wrapper {
-  width: 100%;
-  height: 700px;
-}
 .echarts {
-  width: 100%;
-  height: 100%;
+  width: 400px;
+  height: 400px;
 }
 </style>

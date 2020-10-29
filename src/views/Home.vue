@@ -1,11 +1,13 @@
 <template>
   <div class="home">
-    <b-container class="bv-example-row">
+    <b-container fluid class="bv-example-row">
       <b-row>
         <b-col sm="12">
           <div>
             <b-jumbotron>
-              <TestChart />
+              <h1>Yeahhh</h1>
+              <br />
+              <LineChart :seriesData="lineData" />
             </b-jumbotron>
           </div>
         </b-col>
@@ -56,14 +58,35 @@
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
 
-import TestChart from '@/components/TestChart.vue'
+import LineChart from '@/components/LineChart.vue'
 export default {
   name: 'Home',
   components: {
-    TestChart
+    LineChart
   },
-  mounted: () => {
-    console.log('home')
+  data() {
+    return {
+      lineData: this.getQueries()
+    }
+  },
+  methods: {
+    getQueries() {
+      var base = +new Date(1968, 9, 3)
+      var oneDay = 24 * 3600 * 1000
+      var date = []
+
+      var data = [Math.random() * 300]
+
+      for (var i = 1; i < 20000; i++) {
+        var now = new Date((base += oneDay))
+        date.push(
+          [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/')
+        )
+        data.push(Math.round((Math.random() - 0.5) * 20 + data[i - 1]))
+      }
+      // this.lineData = data
+      return { date: date, data: data }
+    }
   }
 }
 </script>
