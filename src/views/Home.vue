@@ -5,9 +5,16 @@
         <b-col sm="12">
           <div>
             <b-jumbotron>
-              <h1>Yeahhh</h1>
+              <!-- <h1>Yeahhh</h1> -->
+              <button @click="next">
+                Get Data
+              </button>
               <br />
-              <LineChart :seriesData="lineData" />
+              
+              <!-- <LineChart :seriesData="lineData" /> -->
+              <LineChart 
+                v-if="results.length"
+                  :currentResult="results[index]"/>
             </b-jumbotron>
           </div>
         </b-col>
@@ -66,10 +73,29 @@ export default {
   },
   data() {
     return {
-      lineData: this.getQueries()
+      results: [],
+      lineData: this.getQueries(),
+      index: 0,
+      numCorrect: 0,
+      numTotal: 0
     }
   },
   methods: {
+    next() {
+      this.index++
+    },
+
+    get_data() {
+      fetch('http://158.108.33.58:9200/result/_search?&size=100', {
+      method: "get"
+      })
+      .then((Response) => {
+        return (Response.json())
+      })
+      .then((jsonData) => {
+        this.results = jsonData.hits.hits
+      })
+    },
     getQueries() {
       var base = +new Date(1968, 9, 3)
       var oneDay = 24 * 3600 * 1000
@@ -86,7 +112,19 @@ export default {
       }
       // this.lineData = data
       return { date: date, data: data }
-    }
+    },
+  },
+  mounted: function() {
+    fetch('http://158.108.33.58:9200/result/_search?&size=100', {
+      method: "get"
+    })
+    .then((Response) => {
+      return (Response.json())
+    })
+    .then((jsonData) => {
+      this.results = jsonData.hits.hits
+    })
+    console.log(this.results)
   }
 }
 </script>
