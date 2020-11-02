@@ -12,17 +12,27 @@ export default {
     IEcharts
   },
   props: {
-    seriesData: Array
+    currentResult: Object
   },
   data() {
     return {
+      times: [],
+      num_legit: [],
+      num_dga: [],
+      sum_legit: 0 ,
+      sum_dga: 0,
       line: {
         title: {
-          text: 'Wifi Usage'
+          text: 'Number of Legit and DGA'
         },
-        tooltip: {},
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          data: ['Legit' , 'DGA']
+        },
         xAxis: {
-          data: this.seriesData.date
+          data: [this.currentResult._source.timestamp]
         },
         yAxis: { type: 'value' },
         dataZoom: [
@@ -48,24 +58,42 @@ export default {
         ],
         series: [
           {
-            // data: [820, 932, 901, 934, 1290, 1330, 1320],
-            data: this.seriesData.data,
+            data: this.num_legit,
             type: 'line',
-            areaStyle: {}
+            areaStyle: {},
+            name: 'Legit',
+          },
+          {
+            data: this.num_dga,
+            type: 'line',
+            areaStyle: {},
+            name: 'DGA',
           }
-          // {
-          //   // data: [932, 901, 934, 1290, 1330, 1320, 820],
-          //   // data: this.seriesData,
-          //   type: 'line',
-          //   areaStyle: {}
-          // }
         ]
       }
     }
   },
-  mounted: function() {
-    console.log(this.line)
-  }
+  watch: {
+      currentResult: {
+          handler() {
+            this.times.push(this.currentResult._source.timestamp)
+            this.line.xAxis.data = this.times
+            if (this.currentResult._source.is_legit === "True") {
+              this.sum_legit ++
+            }
+            else {
+              this.sum_dga ++
+            }
+            this.num_legit.push(this.sum_legit)
+            this.num_dga.push(this.sum_dga)
+            this.line.series[0].data = this.num_legit
+            this.line.series[1].data = this.num_dga
+          }
+      }
+  },
+  // mounted: function() {
+  //   console.log(this.currentResult)
+  // }
   // methods: {
   //   doRandom() {
   //     const that = this
