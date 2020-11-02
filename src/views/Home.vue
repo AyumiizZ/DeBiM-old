@@ -5,13 +5,13 @@
       <QuriesChart></QuriesChart>
       <b-row>
         <b-col sm="4">
-          <QuriesChart></QuriesChart>
+          <TopSuspectDomain></TopSuspectDomain>
         </b-col>
         <b-col sm="4">
-          <QuriesChart></QuriesChart>
+          <TopSuspectSource></TopSuspectSource>
         </b-col>
         <b-col sm="4">
-          <QuriesChart></QuriesChart>
+          <TopDGA></TopDGA>
         </b-col>
       </b-row>
       <b-row>
@@ -80,9 +80,18 @@
 // import HelloWorld from '@/components/HelloWorld.vue'
 import SummaryTitle from '@/components/SummaryTitle.vue'
 import QuriesChart from '@/components/QuriesChart.vue'
+import TopSuspectDomain from '@/components/TopSuspectDomain.vue'
+import TopSuspectSource from '@/components/TopSuspectSource.vue'
+import TopDGA from '@/components/TopDGA.vue'
 export default {
   name: 'Home',
-  components: { SummaryTitle, QuriesChart },
+  components: {
+    SummaryTitle,
+    QuriesChart,
+    TopSuspectDomain,
+    TopSuspectSource,
+    TopDGA
+  },
   data() {
     return {
       results: [],

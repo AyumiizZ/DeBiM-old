@@ -87,5 +87,6 @@ export default {
 }
 .jumbotron {
   padding: 1rem 1rem;
+  min-height: 400px;
 }
 </style>
