@@ -1,7 +1,8 @@
 <template>
   <Push :closeOnNavigation="true">
     <router-link to="/"><span>Home</span></router-link>
-    <!-- <router-link to="/about"><span>Home</span></router-link> -->
+    <router-link to="/history"><span>History</span></router-link>
+    <router-link to="/about"><span>About</span></router-link>
   </Push>
 </template>
 

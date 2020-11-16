@@ -35,9 +35,12 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 // END add font-awesome
 
 // Add ECharts
-const ECharts = require('vue-echarts')
-Vue.component('v-chart', ECharts)
+// const ECharts = require('vue-echarts')
+// Vue.component('v-chart', ECharts)
 // END add ECharts
+
+import titleSet from './titleSet'
+Vue.mixin(titleSet)
 
 Vue.config.productionTip = false
 

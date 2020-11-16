@@ -16,22 +16,30 @@
           </b-form-datepicker>
         </b-col>
       </b-row>
-      <IEcharts :option="bar" @ready="onReady" @click="onClick" />
+      <v-chart autoresize :options="bar" />
     </b-jumbotron>
   </div>
 </template>
 
 <script>
-import IEcharts from 'vue-echarts-v3/src/full.js'
+import ECharts from 'vue-echarts'
+import 'echarts/lib/chart/bar'
+import 'echarts/lib/component/tooltip'
 export default {
   components: {
-    IEcharts
+    'v-chart': ECharts
   },
   data() {
     return {
       dateValue: '',
       bar: {
         tooltip: {},
+        // grid: {
+        //   left: '0%',
+        //   right: '0%'
+        // },
+        // width: 1200,
+        // height: 300,
         xAxis: {
           data: [
             'Shirt',
@@ -50,9 +58,32 @@ export default {
             data: [5, 20, 36, 10, 10, 20]
           }
         ]
+        // options: { maintainAspectRatio: false }
       }
     }
   }
+  // mounted() {
+  //   var myChartContainer = document.getElementById('main')
+
+  //   // Get adaptive height and width
+  //   var resizeMyChartContainer = function() {
+  //     myChartContainer.style.height = window.innerHeight * 0.65 + 'px'
+  //     myChartContainer.style.width = window.innerWidth * 0.75 + 'px'
+  //   }
+  //   // Set the height and width of the container
+  //   resizeMyChartContainer()
+
+  //   var myChart = Echarts.init(myChartContainer)
+
+  //   let option = {}
+
+  //   myChart.setOption(option)
+  //   // Adaptive height and width
+  //   window.onresize = function() {
+  //     resizeMyChartContainer()
+  //     myChart.resize()
+  //   }
+  // }
 }
 </script>
 
@@ -89,4 +120,8 @@ export default {
   padding: 1rem 1rem;
   min-height: 400px;
 }
+// .echarts {
+//   width: 100%;
+//   height: 100%;
+// }
 </style>

@@ -7,7 +7,7 @@
           <p>(Last Hour)</p>
         </b-col>
       </b-row>
-      <IEcharts :option="pie" @ready="onReady" @click="onClick" />
+      <IEcharts :option="pie" />
     </b-jumbotron>
   </div>
 </template>

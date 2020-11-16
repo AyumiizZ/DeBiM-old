@@ -40,7 +40,7 @@
             <b-jumbotron
               header="Graph"
               lead="Bootstrap v4 Components for Vue.js 2"
-              ><QuriesChart></QuriesChart>
+            >
               <p>For more information visit website</p>
               <b-button variant="primary" href="#">More Info</b-button>
             </b-jumbotron>
@@ -83,6 +83,7 @@ import QuriesChart from '@/components/QuriesChart.vue'
 import TopSuspectDomain from '@/components/TopSuspectDomain.vue'
 import TopSuspectSource from '@/components/TopSuspectSource.vue'
 import TopDGA from '@/components/TopDGA.vue'
+import LineChart from '@/components/LineChart.vue'
 export default {
   name: 'Home',
   components: {
@@ -90,7 +91,8 @@ export default {
     QuriesChart,
     TopSuspectDomain,
     TopSuspectSource,
-    TopDGA
+    TopDGA,
+    LineChart
   },
   data() {
     return {

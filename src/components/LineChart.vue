@@ -19,7 +19,7 @@ export default {
       times: [],
       num_legit: [],
       num_dga: [],
-      sum_legit: 0 ,
+      sum_legit: 0,
       sum_dga: 0,
       line: {
         title: {
@@ -29,7 +29,7 @@ export default {
           trigger: 'axis'
         },
         legend: {
-          data: ['Legit' , 'DGA']
+          data: ['Legit', 'DGA']
         },
         xAxis: {
           data: [this.currentResult._source.timestamp]
@@ -61,36 +61,35 @@ export default {
             data: this.num_legit,
             type: 'line',
             areaStyle: {},
-            name: 'Legit',
+            name: 'Legit'
           },
           {
             data: this.num_dga,
             type: 'line',
             areaStyle: {},
-            name: 'DGA',
+            name: 'DGA'
           }
         ]
       }
     }
   },
   watch: {
-      currentResult: {
-          handler() {
-            this.times.push(this.currentResult._source.timestamp)
-            this.line.xAxis.data = this.times
-            if (this.currentResult._source.is_legit === "True") {
-              this.sum_legit ++
-            }
-            else {
-              this.sum_dga ++
-            }
-            this.num_legit.push(this.sum_legit)
-            this.num_dga.push(this.sum_dga)
-            this.line.series[0].data = this.num_legit
-            this.line.series[1].data = this.num_dga
-          }
+    currentResult: {
+      handler() {
+        this.times.push(this.currentResult._source.timestamp)
+        this.line.xAxis.data = this.times
+        if (this.currentResult._source.is_legit === 'True') {
+          this.sum_legit++
+        } else {
+          this.sum_dga++
+        }
+        this.num_legit.push(this.sum_legit)
+        this.num_dga.push(this.sum_dga)
+        this.line.series[0].data = this.num_legit
+        this.line.series[1].data = this.num_dga
       }
-  },
+    }
+  }
   // mounted: function() {
   //   console.log(this.currentResult)
   // }
