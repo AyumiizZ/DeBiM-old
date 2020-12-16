@@ -1,15 +1,26 @@
 <template>
-  <div class="echarts queries">
-    <IEcharts :option="line" />
+  <div class="quries echarts">
+    <b-jumbotron>
+      <b-row class="quriesTitle">
+        <b-col md="12" class="text">
+          <h1>Top Suspected Domain</h1>
+          <p>(Last Hour)</p>
+        </b-col>
+      </b-row>
+      <IEcharts :option="pie" />
+      <!-- <e -->
+    </b-jumbotron>
   </div>
 </template>
 
 <script type="text/babel">
 import IEcharts from 'vue-echarts-v3/src/full.js'
+// import echarts from 'echarts'
 export default {
-  name: 'donut-chart-01',
+  name: 'TopSuspectDomain',
   components: {
     IEcharts
+    // echarts
   },
   props: {
     currentResult: Object
@@ -18,10 +29,7 @@ export default {
     return {
       sum_legit: 0,
       sum_dga: 0,
-      line: {
-        title: {
-          text: 'Number of Legit and DGA'
-        },
+      pie: {
         tooltip: {
           trigger: 'item',
           formatter: '{b}: {c} ({d}%)'
@@ -64,30 +72,45 @@ export default {
         } else {
           this.sum_dga++
         }
-        this.line.series[0].data[0].value = this.sum_legit
-        this.line.series[0].data[1].value = this.sum_dga
+        this.pie.series[0].data[0].value = this.sum_legit
+        this.pie.series[0].data[1].value = this.sum_dga
       }
     }
   }
-  // mounted: function() {
-  //   console.log(this.currentResult)
-  // }
-  // methods: {
-  //   doRandom() {
-  //     const that = this
-  //     let data = []
-  //     for (let i = 0, min = 5, max = 99; i < 6; i++) {
-  //       data.push(Math.floor(Math.random() * (max + 1 - min) + min))
-  //     }
-  //     that.bar.series[0].data = data
-  //   }
-  // }
 }
 </script>
 
-<style scoped>
-/* .echarts {
-  width: 800px;
-  height: 400px;
-} */
+<style lang="scss" scoped>
+.quries {
+  margin: 0 0 0 0px;
+}
+.quriesTitle {
+  color: #333;
+  padding-right: 0;
+  border-bottom: 1px solid #73879c;
+}
+.text {
+  text-align: left;
+}
+.text h1 {
+  display: inline-block;
+  margin-right: 10px;
+  font-size: 26px;
+  line-height: 50px;
+  font-weight: 500;
+  color: #73879c;
+  margin-block-end: 0;
+}
+.text p {
+  display: inline-block;
+  font-size: 16px;
+  color: #ababab;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-block-end: 0;
+}
+.jumbotron {
+  padding: 1rem 1rem;
+  min-height: 400px;
+}
 </style>

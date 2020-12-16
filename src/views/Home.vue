@@ -1,6 +1,22 @@
 <template>
   <div class="home">
-    <b-container fluid class="bv-example-row">
+    <b-container fluid>
+      <SummaryTitle> </SummaryTitle>
+      <QuriesChart></QuriesChart>
+      <b-row>
+        <b-col sm="4">
+          <TopSuspectDomain
+            v-if="results.length"
+            :currentResult="results[index]"
+          ></TopSuspectDomain>
+        </b-col>
+        <b-col sm="4">
+          <TopSuspectSource></TopSuspectSource>
+        </b-col>
+        <b-col sm="4">
+          <TopDGA></TopDGA>
+        </b-col>
+      </b-row>
       <b-row>
         <b-col sm="12">
           <div>
@@ -10,11 +26,12 @@
                 Get Data
               </button>
               <br />
-              
+
               <!-- <LineChart :seriesData="lineData" /> -->
-              <LineChart 
+              <LineChart
                 v-if="results.length"
-                  :currentResult="results[index]"/>
+                :currentResult="results[index]"
+              />
             </b-jumbotron>
           </div>
         </b-col>
@@ -26,7 +43,8 @@
             <b-jumbotron>
               <DonutChart01
                 v-if="results.length"
-                  :currentResult="results[index]"/>
+                :currentResult="results[index]"
+              />
             </b-jumbotron>
           </div>
         </b-col>
@@ -35,7 +53,8 @@
             <b-jumbotron>
               <DonutChart02
                 v-if="results.length"
-                  :currentResult="results[index]"/>
+                :currentResult="results[index]"
+              />
             </b-jumbotron>
           </div>
         </b-col>
@@ -44,7 +63,8 @@
             <b-jumbotron>
               <DonutChart03
                 v-if="results.length"
-                  :currentResult="results[index]"/>
+                :currentResult="results[index]"
+              />
             </b-jumbotron>
           </div>
         </b-col>
@@ -58,7 +78,11 @@
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
-
+import SummaryTitle from '@/components/SummaryTitle.vue'
+import QuriesChart from '@/components/QuriesChart.vue'
+import TopSuspectDomain from '@/components/TopSuspectDomain.vue'
+import TopSuspectSource from '@/components/TopSuspectSource.vue'
+import TopDGA from '@/components/TopDGA.vue'
 import LineChart from '@/components/LineChart.vue'
 import DonutChart01 from '@/components/DonutChart01.vue'
 import DonutChart02 from '@/components/DonutChart02.vue'
@@ -69,7 +93,13 @@ export default {
     LineChart,
     DonutChart01,
     DonutChart02,
-    DonutChart03
+    DonutChart03,
+    SummaryTitle,
+    QuriesChart,
+    TopSuspectDomain,
+    TopSuspectSource,
+    TopDGA
+    // LineChart
   },
   data() {
     return {
@@ -87,14 +117,14 @@ export default {
 
     get_data() {
       fetch('http://158.108.33.58:9200/result/_search?&size=100', {
-      method: "get"
+        method: 'get'
       })
-      .then((Response) => {
-        return (Response.json())
-      })
-      .then((jsonData) => {
-        this.results = jsonData.hits.hits
-      })
+        .then(Response => {
+          return Response.json()
+        })
+        .then(jsonData => {
+          this.results = jsonData.hits.hits
+        })
     },
     getQueries() {
       var base = +new Date(1968, 9, 3)
@@ -112,18 +142,18 @@ export default {
       }
       // this.lineData = data
       return { date: date, data: data }
-    },
+    }
   },
   mounted: function() {
     fetch('http://158.108.33.58:9200/result/_search?&size=100', {
-      method: "get"
+      method: 'get'
     })
-    .then((Response) => {
-      return (Response.json())
-    })
-    .then((jsonData) => {
-      this.results = jsonData.hits.hits
-    })
+      .then(Response => {
+        return Response.json()
+      })
+      .then(jsonData => {
+        this.results = jsonData.hits.hits
+      })
     console.log(this.results)
   }
 }
