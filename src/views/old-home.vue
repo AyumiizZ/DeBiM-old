@@ -1,34 +1,13 @@
 <template>
   <div class="home">
-    <b-container fluid>
-      <SummaryTitle> </SummaryTitle>
-      <QuriesChart></QuriesChart>
-      <b-row>
-        <b-col sm="4">
-          <TopSuspectDomain></TopSuspectDomain>
-        </b-col>
-        <b-col sm="4">
-          <TopSuspectSource></TopSuspectSource>
-        </b-col>
-        <b-col sm="4">
-          <TopDGA></TopDGA>
-        </b-col>
-      </b-row>
+    <b-container fluid="lg">
       <b-row>
         <b-col sm="12">
           <div>
             <b-jumbotron>
-              <!-- <h1>Yeahhh</h1> -->
-              <button @click="next">
-                Get Data
-              </button>
+              <h1>Yeahhh</h1>
               <br />
-
-              <!-- <LineChart :seriesData="lineData" /> -->
-              <LineChart
-                v-if="results.length"
-                :currentResult="results[index]"
-              />
+              <LineChart :seriesData="lineData" />
             </b-jumbotron>
           </div>
         </b-col>
@@ -78,47 +57,19 @@
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
-import SummaryTitle from '@/components/SummaryTitle.vue'
-import QuriesChart from '@/components/QuriesChart.vue'
-import TopSuspectDomain from '@/components/TopSuspectDomain.vue'
-import TopSuspectSource from '@/components/TopSuspectSource.vue'
-import TopDGA from '@/components/TopDGA.vue'
+
 import LineChart from '@/components/LineChart.vue'
 export default {
   name: 'Home',
   components: {
-    SummaryTitle,
-    QuriesChart,
-    TopSuspectDomain,
-    TopSuspectSource,
-    TopDGA,
     LineChart
   },
   data() {
     return {
-      results: [],
-      lineData: this.getQueries(),
-      index: 0,
-      numCorrect: 0,
-      numTotal: 0
+      lineData: this.getQueries()
     }
   },
   methods: {
-    next() {
-      this.index++
-    },
-
-    get_data() {
-      fetch('http://158.108.33.58:9200/result/_search?&size=100', {
-        method: 'get'
-      })
-        .then(Response => {
-          return Response.json()
-        })
-        .then(jsonData => {
-          this.results = jsonData.hits.hits
-        })
-    },
     getQueries() {
       var base = +new Date(1968, 9, 3)
       var oneDay = 24 * 3600 * 1000
@@ -136,18 +87,6 @@ export default {
       // this.lineData = data
       return { date: date, data: data }
     }
-  },
-  mounted: function() {
-    fetch('http://158.108.33.58:9200/result/_search?&size=100', {
-      method: 'get'
-    })
-      .then(Response => {
-        return Response.json()
-      })
-      .then(jsonData => {
-        this.results = jsonData.hits.hits
-      })
-    console.log(this.results)
   }
 }
 </script>

@@ -19,11 +19,12 @@ export default {
     SideBar
     // TestChart
   },
+  title: 'Botection',
   data() {
     return {
       showSideBar: false
     }
-  },
+  }
 }
 </script>
 

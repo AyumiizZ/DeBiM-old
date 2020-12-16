@@ -20,16 +20,27 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 // Add font-awesome
 // Font Awesome by Dave Gandy - http://fontawesome.io
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
+import {
+  faUser,
+  faSortUp,
+  faSortDown,
+  faEquals
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-library.add(faUserSecret)
+library.add(faUser)
+library.add(faSortUp)
+library.add(faSortDown)
+library.add(faEquals)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 // END add font-awesome
 
 // Add ECharts
-const ECharts = require('vue-echarts')
-Vue.component('v-chart', ECharts)
+// const ECharts = require('vue-echarts')
+// Vue.component('v-chart', ECharts)
 // END add ECharts
+
+import titleSet from './titleSet'
+Vue.mixin(titleSet)
 
 Vue.config.productionTip = false
 

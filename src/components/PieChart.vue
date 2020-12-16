@@ -1,38 +1,28 @@
 <template>
   <div class="echarts">
-    <IEcharts :option="line" />
+    <IEcharts :option="pie" />
   </div>
 </template>
 
 <script type="text/babel">
 import IEcharts from 'vue-echarts-v3/src/full.js'
 export default {
-  name: 'line-chart',
+  name: 'pie-chart',
   components: {
     IEcharts
   },
   props: {
-    currentResult: Object
+    seriesData: Array
   },
   data() {
     return {
-      times: [],
-      num_legit: [],
-      num_dga: [],
-      sum_legit: 0,
-      sum_dga: 0,
-      line: {
+      pie: {
         title: {
-          text: 'Number of Legit and DGA'
+          text: 'Wifi Usage'
         },
-        tooltip: {
-          trigger: 'axis'
-        },
-        legend: {
-          data: ['Legit', 'DGA']
-        },
+        tooltip: {},
         xAxis: {
-          data: [this.currentResult._source.timestamp]
+          data: this.seriesData.date
         },
         yAxis: { type: 'value' },
         dataZoom: [
@@ -58,41 +48,24 @@ export default {
         ],
         series: [
           {
-            data: this.num_legit,
+            // data: [820, 932, 901, 934, 1290, 1330, 1320],
+            data: this.seriesData.data,
             type: 'line',
-            areaStyle: {},
-            name: 'Legit'
-          },
-          {
-            data: this.num_dga,
-            type: 'line',
-            areaStyle: {},
-            name: 'DGA'
+            areaStyle: {}
           }
+          // {
+          //   // data: [932, 901, 934, 1290, 1330, 1320, 820],
+          //   // data: this.seriesData,
+          //   type: 'line',
+          //   areaStyle: {}
+          // }
         ]
       }
     }
   },
-  watch: {
-    currentResult: {
-      handler() {
-        this.times.push(this.currentResult._source.timestamp)
-        this.line.xAxis.data = this.times
-        if (this.currentResult._source.is_legit === 'True') {
-          this.sum_legit++
-        } else {
-          this.sum_dga++
-        }
-        this.num_legit.push(this.sum_legit)
-        this.num_dga.push(this.sum_dga)
-        this.line.series[0].data = this.num_legit
-        this.line.series[1].data = this.num_dga
-      }
-    }
+  mounted: function() {
+    console.log(this.line)
   }
-  // mounted: function() {
-  //   console.log(this.currentResult)
-  // }
   // methods: {
   //   doRandom() {
   //     const that = this
