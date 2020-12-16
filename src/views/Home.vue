@@ -23,34 +23,28 @@
       <b-row>
         <b-col sm="4">
           <div>
-            <b-jumbotron
-              header="Graph"
-              lead="Bootstrap v4 Components for Vue.js 2"
-            >
-              <p>For more information visit website</p>
-              <b-button variant="primary" href="#">More Info</b-button>
+            <b-jumbotron>
+              <DonutChart01
+                v-if="results.length"
+                  :currentResult="results[index]"/>
             </b-jumbotron>
           </div>
         </b-col>
         <b-col sm="4">
           <div>
-            <b-jumbotron
-              header="Graph"
-              lead="Bootstrap v4 Components for Vue.js 2"
-            >
-              <p>For more information visit website</p>
-              <b-button variant="primary" href="#">More Info</b-button>
+            <b-jumbotron>
+              <DonutChart02
+                v-if="results.length"
+                  :currentResult="results[index]"/>
             </b-jumbotron>
           </div>
         </b-col>
         <b-col sm="4">
           <div>
-            <b-jumbotron
-              header="Graph"
-              lead="Bootstrap v4 Components for Vue.js 2"
-            >
-              <p>For more information visit website</p>
-              <b-button variant="primary" href="#">More Info</b-button>
+            <b-jumbotron>
+              <DonutChart03
+                v-if="results.length"
+                  :currentResult="results[index]"/>
             </b-jumbotron>
           </div>
         </b-col>
@@ -66,10 +60,16 @@
 // import HelloWorld from '@/components/HelloWorld.vue'
 
 import LineChart from '@/components/LineChart.vue'
+import DonutChart01 from '@/components/DonutChart01.vue'
+import DonutChart02 from '@/components/DonutChart02.vue'
+import DonutChart03 from '@/components/DonutChart03.vue'
 export default {
   name: 'Home',
   components: {
-    LineChart
+    LineChart,
+    DonutChart01,
+    DonutChart02,
+    DonutChart03
   },
   data() {
     return {
