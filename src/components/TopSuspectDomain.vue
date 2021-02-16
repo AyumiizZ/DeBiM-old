@@ -67,7 +67,7 @@ export default {
   watch: {
     currentResult: {
       handler() {
-        if (this.currentResult._source.is_legit === 'True') {
+        if (this.currentResult._source.is_legit) {
           this.sum_legit++
         } else {
           this.sum_dga++

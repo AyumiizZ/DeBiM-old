@@ -3,6 +3,9 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import Echarts from 'vue-echarts'
+// import VueElasticsearch from 'vue-elasticsearch'
+
+// Vue.use(VueElasticsearch)
 import 'echarts/lib/chart/bar'
 import 'echarts/lib/component/title'
 import 'echarts/lib/chart/line'

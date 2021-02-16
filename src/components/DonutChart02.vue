@@ -59,14 +59,15 @@ export default {
   watch: {
       currentResult: {
           handler() {
-            if (this.currentResult._source.is_legit === "True") {
-              this.sum_legit ++
-            }
-            else {
-              this.sum_dga ++
-            }
-            this.line.series[0].data[0].value = this.sum_legit
-            this.line.series[0].data[1].value = this.sum_dga
+ if (typeof this.currentResult._source.is_legit !== 'undefined') {
+          if (this.currentResult._source.is_legit) {
+            this.sum_legit++
+          } else {
+            this.sum_dga++
+          }
+        }
+        this.line.series[0].data[0].value = this.sum_legit
+        this.line.series[0].data[1].value = this.sum_dga
             // this.diff_time = this.currentResult._source.timestamp + timedelta(hours=9)
             // this.old_time = this.diff_time
           }

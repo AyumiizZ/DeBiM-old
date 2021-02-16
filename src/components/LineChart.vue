@@ -12,7 +12,8 @@ export default {
     IEcharts
   },
   props: {
-    currentResult: Object
+    currentResult: Object,
+    status: Boolean
   },
   data() {
     return {
@@ -21,6 +22,7 @@ export default {
       num_dga: [],
       sum_legit: 0,
       sum_dga: 0,
+      old_timestamp: '',
       line: {
         title: {
           text: 'Number of Legit and DGA'
@@ -32,7 +34,7 @@ export default {
           data: ['Legit', 'DGA']
         },
         xAxis: {
-          data: [this.currentResult._source.timestamp]
+          data: [' ']
         },
         yAxis: { type: 'value' },
         dataZoom: [
@@ -76,23 +78,41 @@ export default {
   watch: {
     currentResult: {
       handler() {
-        this.times.push(this.currentResult._source.timestamp)
-        this.line.xAxis.data = this.times
-        if (this.currentResult._source.is_legit === 'True') {
-          this.sum_legit++
-        } else {
-          this.sum_dga++
+        // try {
+        //   this.times.push(this.currentResult._source.timestamp)
+        // }
+        // catch(err) {
+        //   return
+        // }
+        if (this.status) {
+          // console.log('---------------------')
+          // try {
+          this.times.push(this.currentResult._source.timestamp)
+          this.line.xAxis.data = this.times
+          if (this.currentResult._source.is_legit) {
+            this.sum_legit++
+          } else {
+            this.sum_dga++
+          }
+          this.num_legit.push(this.sum_legit)
+          this.num_dga.push(this.sum_dga)
+          this.line.series[0].data = this.num_legit
+          this.line.series[1].data = this.num_dga
+          // console.log(this.currentResult._source.is_legit)
+          // console.log(this.currentResult._source.timestamp)
+          this.old_timestamp = this.currentResult._source.timestamp
         }
-        this.num_legit.push(this.sum_legit)
-        this.num_dga.push(this.sum_dga)
-        this.line.series[0].data = this.num_legit
-        this.line.series[1].data = this.num_dga
+      else {
+          this.times.push(this.old_timestamp)
+          this.num_legit.push(this.sum_legit)
+          this.num_dga.push(this.sum_dga)
+          this.line.series[0].data = this.num_legit
+          this.line.series[1].data = this.num_dga
+        }
       }
     }
-  }
-  // mounted: function() {
-  //   console.log(this.currentResult)
-  // }
+  },
+
   // methods: {
   //   doRandom() {
   //     const that = this
@@ -102,6 +122,9 @@ export default {
   //     }
   //     that.bar.series[0].data = data
   //   }
+  // }
+  // mounted: function() {
+  //   console.log(this.currentResult)
   // }
 }
 </script>
