@@ -1,7 +1,32 @@
 <template>
   <div class="echarts">
+        <b-row class="quriesTitle">
+      <b-col md="12" class="text">
+    <h1>Number of Legit and DGA</h1>
+      </b-col>
+    </b-row>
     <IEcharts :option="line" />
   </div>
+  <!-- <div class="quries">
+    <b-jumbotron>
+      <b-row class="quriesTitle">
+        <b-col md="6" class="text">
+          <h1>Network Activities</h1>
+          <p>Graph title sub-title</p>
+        </b-col>
+        <b-col md="4"></b-col>
+        <b-col md="2">
+          <b-form-datepicker
+            id="example-datepicker"
+            v-model="dateValue"
+            class="mb-2"
+          >
+          </b-form-datepicker>
+        </b-col>
+      </b-row>
+      <IEcharts autoresize :option="line" class="echarts"/>
+    </b-jumbotron>
+  </div> -->
 </template>
 
 <script type="text/babel">
@@ -13,7 +38,8 @@ export default {
   },
   props: {
     currentResult: Object,
-    status: Boolean
+    status: Boolean,
+    currentDate: String
   },
   data() {
     return {
@@ -22,11 +48,10 @@ export default {
       num_dga: [],
       sum_legit: 0,
       sum_dga: 0,
-      old_timestamp: '',
       line: {
-        title: {
-          text: 'Number of Legit and DGA'
-        },
+        // title: {
+        //   text: 'Number of Legit and DGA'
+        // },
         tooltip: {
           trigger: 'axis'
         },
@@ -85,9 +110,13 @@ export default {
         //   return
         // }
         if (this.status) {
+          if (this.currentResult._source.Way === "<-") {
+            return
+          }
           // console.log('---------------------')
           // try {
-          this.times.push(this.currentResult._source.timestamp)
+          // this.times.push(this.currentResult._source.timestamp)
+          this.times.push(this.currentDate)
           this.line.xAxis.data = this.times
           if (this.currentResult._source.is_legit) {
             this.sum_legit++
@@ -100,10 +129,10 @@ export default {
           this.line.series[1].data = this.num_dga
           // console.log(this.currentResult._source.is_legit)
           // console.log(this.currentResult._source.timestamp)
-          this.old_timestamp = this.currentResult._source.timestamp
         }
       else {
-          this.times.push(this.old_timestamp)
+          this.times.push(this.currentDate)
+          this.line.xAxis.data = this.times
           this.num_legit.push(this.sum_legit)
           this.num_dga.push(this.sum_dga)
           this.line.series[0].data = this.num_legit
@@ -129,9 +158,42 @@ export default {
 }
 </script>
 
-<style scoped>
-/* .echarts {
-  width: 800px;
-  height: 400px;
-} */
+<style lang="scss" scoped>
+  .echarts {
+    width: 1800px;
+    height: 450px;
+  }
+.quries {
+  margin: 0 0 0 0px;
+  
+}
+.quriesTitle {
+  color: #333;
+  padding-right: 0;
+  border-bottom: 1px solid #73879c;
+}
+.text {
+  text-align: left;
+}
+.text h1 {
+  display: inline-block;
+  margin-right: 10px;
+  font-size: 26px;
+  line-height: 50px;
+  font-weight: 500;
+  color: #73879c;
+  margin-block-end: 0;
+}
+.text p {
+  display: inline-block;
+  font-size: 16px;
+  color: #ababab;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-block-end: 0;
+}
+.jumbotron {
+  padding: 1rem 1rem;
+  min-height: 400px;
+}
 </style>

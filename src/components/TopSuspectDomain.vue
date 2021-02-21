@@ -8,6 +8,7 @@
         </b-col>
       </b-row>
       <IEcharts :option="pie" />
+      <!-- </b-col> -->
       <!-- <e -->
     </b-jumbotron>
   </div>
