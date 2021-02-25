@@ -17,8 +17,9 @@ export default {
     IEcharts
   },
   props: {
-    currentResult: Object,
-    status: Boolean
+    currentResult: Array,
+    status: Boolean,
+    last_result: Object,
   },
   data() {
     return {
@@ -69,17 +70,43 @@ export default {
   watch: {
     currentResult: {
       handler() {
-        if (this.status) {
-          if (this.currentResult._source.Way === "<-") {
-            return
+        for (var i in this.currentResult) {
+          if (this.currentResult[i]._source.Way === "->") {
+            if (this.currentResult[i]._source.is_legit) {
+              this.sum_legit++
+            } 
+            else {
+              this.sum_dga++
+            }
           }
-          if (this.currentResult._source.is_legit) {
+        }
+        this.line.series[0].data[0].value = this.sum_legit-1
+        this.line.series[0].data[1].value = this.sum_dga
+        // if (this.status) {
+        //   if (this.currentResult._source.Way === "<-") {
+        //     return
+        //   }
+        //   if (this.currentResult._source.is_legit) {
+        //     this.sum_legit++
+        //   } 
+        //   else {
+        //     this.sum_dga++
+        //   }
+        //   this.line.series[0].data[0].value = this.sum_legit
+        //   this.line.series[0].data[1].value = this.sum_dga
+        // }
+      }
+    },
+    last_result: {
+      handler() {
+        if (this.status){
+          if (this.last_result._source.is_legit) {
             this.sum_legit++
           } 
           else {
             this.sum_dga++
           }
-          this.line.series[0].data[0].value = this.sum_legit
+          this.line.series[0].data[0].value = this.sum_legit-1
           this.line.series[0].data[1].value = this.sum_dga
         }
       }

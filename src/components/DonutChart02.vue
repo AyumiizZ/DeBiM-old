@@ -17,8 +17,9 @@ export default {
     IEcharts
   },
   props: {
-    currentResult: Object,
-    status: Boolean
+    currentResult: Array,
+    status: Boolean,
+    last_result: Object,
   },
   data() {
     return {
@@ -79,60 +80,127 @@ export default {
   watch: {
       currentResult: {
           handler() {
-            if (this.status) {
-              if (this.currentResult._source.Way === "<-") {
-                return
-              }
-              if (!this.currentResult._source.is_legit) {
-                this.sum += 1
-                if (isNaN(this.dict[this.currentResult._source.SrcIP])) {
-                  this.dict[this.currentResult._source.SrcIP] = 0
+        // for (var i in this.currentResult) {
+        //   if (this.currentResult[i]._source.is_legit) {
+        //     this.sum_legit++
+        //   } 
+        //   else {
+        //     this.sum_dga++
+        //   }
+        // }
+            for(var i in this.currentResult) {
+              console.log(this.currentResult[i])
+              if (this.currentResult[i]._source.Way === "->") {
+                if (!this.currentResult[i]._source.is_legit) {
+                  this.sum += 1
+                  if (isNaN(this.dict[this.currentResult[i]._source.SrcIP])) {
+                    this.dict[this.currentResult[i]._source.SrcIP] = 0
+                  }
+                  this.dict[this.currentResult[i]._source.SrcIP] += 1
+                  console.log(this.dict)
+                  var sortable = [];
+                  for (var sumip in this.dict) {
+                      sortable.push([sumip, this.dict[sumip]]);
+                  }
+                  sortable.sort(function(a, b) {
+                      return a[1] - b[1];
+                  });
+
+                  // if (this.is_update) {
+                  this.IP1 = (sortable[Object.keys(sortable).length - 1][0])
+                  if (typeof sortable[Object.keys(sortable).length - 2] !== 'undefined')
+                    this.IP2 = (sortable[Object.keys(sortable).length - 2][0]) 
+                  if (typeof sortable[Object.keys(sortable).length - 3] !== 'undefined')
+                    this.IP3 = (sortable[Object.keys(sortable).length - 3][0])
+                  if (typeof sortable[Object.keys(sortable).length - 4] !== 'undefined')
+                    this.IP4 = (sortable[Object.keys(sortable).length - 4][0])
+                  if (typeof sortable[Object.keys(sortable).length - 5] !== 'undefined')
+                    this.IP5 = (sortable[Object.keys(sortable).length - 5][0])
+                  this.sum_IP1 = (sortable[Object.keys(sortable).length - 1][1])
+                  if (typeof sortable[Object.keys(sortable).length - 2] !== 'undefined')
+                    this.sum_IP2 = (sortable[Object.keys(sortable).length - 2][1])
+                  if (typeof sortable[Object.keys(sortable).length - 3] !== 'undefined')
+                    this.sum_IP3 = (sortable[Object.keys(sortable).length - 3][1])
+                  if (typeof sortable[Object.keys(sortable).length - 4] !== 'undefined')
+                    this.sum_IP4 = (sortable[Object.keys(sortable).length - 4][1])
+                  if (typeof sortable[Object.keys(sortable).length - 5] !== 'undefined')
+                    this.sum_IP5 = (sortable[Object.keys(sortable).length - 5][1])
+                  this.sum_Other = this.sum - (this.sum_IP1+this.sum_IP2+this.sum_IP3+this.sum_IP4)
+                  // console.log(this.sum_IP1)
                 }
-                this.dict[this.currentResult._source.SrcIP] += 1
-                // console.log(this.dict)
-                var sortable = [];
-                for (var sumip in this.dict) {
-                    sortable.push([sumip, this.dict[sumip]]);
-                }
-                sortable.sort(function(a, b) {
-                    return a[1] - b[1];
-                });
-                console.log(this.dict)
-                // if (this.is_update) {
-                this.IP1 = (sortable[Object.keys(sortable).length - 1][0])
-                this.IP2 = (sortable[Object.keys(sortable).length - 2][0])
-                this.IP3 = (sortable[Object.keys(sortable).length - 3][0])
-                this.IP4 = (sortable[Object.keys(sortable).length - 4][0])
-                this.IP5 = (sortable[Object.keys(sortable).length - 5][0])
-                this.sum_IP1 = (sortable[Object.keys(sortable).length - 1][1])
-                this.sum_IP2 = (sortable[Object.keys(sortable).length - 2][1])
-                this.sum_IP3 = (sortable[Object.keys(sortable).length - 3][1])
-                this.sum_IP4 = (sortable[Object.keys(sortable).length - 4][1])
-                this.sum_IP5 = (sortable[Object.keys(sortable).length - 5][1])
-                this.sum_Other = this.sum - (this.sum_IP1+this.sum_IP2+this.sum_IP3+this.sum_IP4)
-                this.line.series[0].data[0].value = this.sum_IP1
-                this.line.series[0].data[1].value = this.sum_IP2
-                this.line.series[0].data[2].value = this.sum_IP3
-                this.line.series[0].data[3].value = this.sum_IP4
-                this.line.series[0].data[4].value = this.sum_Other
-                this.line.series[0].data[0].name = this.IP1
-                this.line.series[0].data[1].name = this.IP2
-                this.line.series[0].data[2].name = this.IP3
-                this.line.series[0].data[3].name = this.IP4
-          
-                console.log(this.sum_IP1)
-              }
-              else {
-                console.log("is not DGA")
               }
             }
+            console.log(this.dict)
+            this.line.series[0].data[0].value = this.sum_IP1
+            this.line.series[0].data[1].value = this.sum_IP2
+            this.line.series[0].data[2].value = this.sum_IP3
+            this.line.series[0].data[3].value = this.sum_IP4
+            this.line.series[0].data[4].value = this.sum_Other
+            this.line.series[0].data[0].name = this.IP1
+            this.line.series[0].data[1].name = this.IP2
+            this.line.series[0].data[2].name = this.IP3
+            this.line.series[0].data[3].name = this.IP4
             // this.line.series[0].data[0].value = this.sum_legit
             // this.line.series[0].data[1].value = this.sum_dga
             // this.diff_time = this.currentResult._source.timestamp + timedelta(hours=9)
             // this.old_time = this.diff_time
           }
+      },
+    last_result: {
+      handler() {
+        if (this.status){
+          if (!this.last_result._source.is_legit) {
+            this.sum += 1
+            if (isNaN(this.dict[this.last_result._source.SrcIP])) {
+              this.dict[this.last_result._source.SrcIP] = 0
+            }
+            this.dict[this.last_result._source.SrcIP] += 1
+            console.log(this.dict)
+            var sortable = [];
+            for (var sumip in this.dict) {
+                sortable.push([sumip, this.dict[sumip]]);
+            }
+            sortable.sort(function(a, b) {
+                return a[1] - b[1];
+            });
+
+            // if (this.is_update) {
+            this.IP1 = (sortable[Object.keys(sortable).length - 1][0])
+            if (typeof sortable[Object.keys(sortable).length - 2] !== 'undefined')
+              this.IP2 = (sortable[Object.keys(sortable).length - 2][0]) 
+            if (typeof sortable[Object.keys(sortable).length - 3] !== 'undefined')
+              this.IP3 = (sortable[Object.keys(sortable).length - 3][0])
+            if (typeof sortable[Object.keys(sortable).length - 4] !== 'undefined')
+              this.IP4 = (sortable[Object.keys(sortable).length - 4][0])
+            if (typeof sortable[Object.keys(sortable).length - 5] !== 'undefined')
+              this.IP5 = (sortable[Object.keys(sortable).length - 5][0])
+            this.sum_IP1 = (sortable[Object.keys(sortable).length - 1][1])
+            if (typeof sortable[Object.keys(sortable).length - 2] !== 'undefined')
+              this.sum_IP2 = (sortable[Object.keys(sortable).length - 2][1])
+            if (typeof sortable[Object.keys(sortable).length - 3] !== 'undefined')
+              this.sum_IP3 = (sortable[Object.keys(sortable).length - 3][1])
+            if (typeof sortable[Object.keys(sortable).length - 4] !== 'undefined')
+              this.sum_IP4 = (sortable[Object.keys(sortable).length - 4][1])
+            if (typeof sortable[Object.keys(sortable).length - 5] !== 'undefined')
+              this.sum_IP5 = (sortable[Object.keys(sortable).length - 5][1])
+            this.sum_Other = this.sum - (this.sum_IP1+this.sum_IP2+this.sum_IP3+this.sum_IP4)
+            // console.log(this.sum_IP1)
+          }
+        }
+        // console.log(this.sum_Other)
+        this.line.series[0].data[0].value = this.sum_IP1
+        this.line.series[0].data[1].value = this.sum_IP2
+        this.line.series[0].data[2].value = this.sum_IP3
+        this.line.series[0].data[3].value = this.sum_IP4
+        this.line.series[0].data[4].value = this.sum_Other
+        this.line.series[0].data[0].name = this.IP1
+        this.line.series[0].data[1].name = this.IP2
+        this.line.series[0].data[2].name = this.IP3
+        this.line.series[0].data[3].name = this.IP4
       }
+    }
   },
+
   // mounted: function() {
   //   console.log(this.currentResult)
   // }
