@@ -162,28 +162,29 @@ export default {
       time: '',
       day: '',
       test: true,
-      last_id: 0,
       last_res: [],
       last_time: '',
       first: true,
       hour:2,
-      min:59,
-      sec:3,
-      
+      min:54,
+      sec:5,
+      just_update: false
     }
   },
   methods: {
-    GetData () {
+    async GetData () {
       var LocalTime = require("@js-joda/core").LocalTime;
       if (this.first) {
-        // console.log((this.pad(this.hour,2) + ':' + this.pad(this.min,2) + ':' + this.pad(this.sec,2)))
-        this.last_time = LocalTime.parse((this.pad(this.hour,2) + ':' + this.pad(59,2) + ':' + this.pad(59,2)) )
+        // this.last_time = LocalTime.parse((this.pad(this.time.toString().split(":")[0],2) + ':' + this.pad(this.time.toString().split(":")[1],2)))
+        this.last_time = LocalTime.parse(this.pad(this.hour,2) + ':' + this.pad(this.min,2) + ':' +this.pad(this.sec,2))
         this.first = false
       }
-      this.last_time = this.last_time.plusSeconds(1)
-      this.last_id = parseInt(this.results[this.results.length-1]._id)+ this.index
+      var last_id = await parseInt(this.results[this.results.length-1]._id)+ this.index
+      console.log(last_id)
+      var d1 = new Date();
+      var n1 = d1.getTime();
       try {
-        fetch('http://158.108.33.58:9200/data_domain/_doc/' + this.last_id, {
+        await fetch('http://158.108.33.58:9200/data_domain/_doc/' + last_id, {
           method: "get"
         })
         .then((Response) => {
@@ -192,35 +193,54 @@ export default {
         .then((jsonData) => {
           this.last_res = jsonData
         })
-        if (this.last_res._source.Way === "<-") {
-          this.is_update = false
-        }
-        if (typeof this.last_res._source.is_legit !== 'undefined') {
-          this.is_update = true
-          console.log(this.last_res._source.SrcIP)
-        }
-        else {
-          this.is_update = false
-        }
+        var d2 = new Date();
+        var n2 = d2.getTime();
+        console.log("time = " , (n2-n1)/1000)
+        // if (this.last_res._source.Way === "<-") {
+        //   this.index++
+        // }
           // console.log(this.results._source.QueryName)
           // console.log(this.results._source.is_legit)
           // console.log(this.is_update)
         // }
       }
+      
       catch(err) {
         this.is_update = false
         console.log("Error")
       }
-      if (this.last_time < LocalTime.parse(this.last_res._source.timestamp.split(" ")[1].split(".")[0])){
+      // console.log(last_id)
+      console.log(this.last_time.toString())
+      console.log(this.last_res)
+      var next_time = await LocalTime.parse(this.last_res._source.timestamp.split(" ")[1].split(".")[0])
+      console.log(next_time.toString() === LocalTime.parse(this.last_res._source.timestamp.split(" ")[1].split(".")[0]).toString())
+      if (this.last_time < next_time || this.just_update){
         // console.log(this.last_time.toString())
         // console.log(this.last_res._source.timestamp.split(" ")[1].split(".")[0])
-        // console.log("--------")
+        console.log("--------")
         this.is_update = false
+        this.just_update = false
       }
     // console.log(this.last_res)
-    else {
-      this.index ++
+      else {
+        if (this.last_res._source.Way === "<-") {
+          this.is_update = false
+        }
+        else if (typeof this.last_res._source.is_legit !== 'undefined') {
+          
+          this.is_update = true
+          this.just_update = true
+          console.log("UPDATE")
+        }
+        else {
+          this.is_update = false
+        }
+        this.index ++
+        // this.is_update = true
+        // next_time = await LocalTime.parse(this.last_res._source.timestamp.split(" ")[1].split(".")[0])
+        console.log(next_time)
       }
+      this.last_time = this.last_time.plusSeconds(1)
     },
     pad(num, size) {
       num = num.toString();
@@ -334,36 +354,46 @@ export default {
     // var hour = 4
     // var min = 42
     // var sec = 0
-    var mil = 0
+    // var mil = 0
     var s = ''
+    var t 
     // var res
     // var n = d.toDateString().split(' ')
-    this.time = this.hour + ':' + this.min + ':' + this.sec + '.' + mil
+    var LocalTime = require("@js-joda/core").LocalTime;
+    t = LocalTime.parse((this.pad(this.hour,2) + ':' + this.pad(this.min,2) + ':' + this.pad(this.sec,2)) )
+    console.log(t.minusMinutes(15).toString().split(":")[0])
+    this.time = t
+    for (var i = 0;i < 14; i++) {
+      s += '%2201-Feb-20%20' + (t.toString().split(":")[0]) + ':' + (t.toString().split(":")[1]) + '%22 +'
+      t = t.minusMinutes(1)
+      // con
+    }
     // this.day = n[2] + '-' + n[1] + '-' + n[3] 
-    for (var i = this.min; i <= 59; i++) {
-      if (this.hour.toString().length === 1) {
-        if (this.min.toString().length === 1) {
-          s += '%2201-Feb-20%200' + (this.hour-1) + ':0' + i + '%22 +'
-        }
-        else {
-          s += '%2201-Feb-20%200' + (this.hour-1) + ':' + i + '%22 +'
-        }
-      }
-      else {
-        if (this.min.toString().length === 1) {
-          s += '%2201-Feb-20%20' + (this.hour-1) + ':0' + i + '%22 +'
-        }
-        else {
-          s += '%2201-Feb-20%20' + (this.hour-1) + ':' + i + '%22 +'
-        }
-      }
-    }
-    if (this.hour.toString().length === 1) {
-      s += '%2201-Feb-20%200' + (this.hour) + '%22&size=10000&sort=_id'
-    }
-    else {
-      s += '%2201-Feb-20%20' + (this.hour) + '%22&size=10000&sort=_id' 
-    }
+    // for (var i = this.min; i <= 59; i++) {
+    //   if (this.hour.toString().length === 1) {
+    //     if (this.min.toString().length === 1) {
+    //       s += '%2201-Feb-20%200' + (this.hour-1) + ':0' + i + '%22 +'
+    //     }
+    //     else {
+    //       s += '%2201-Feb-20%200' + (this.hour-1) + ':' + i + '%22 +'
+    //     }
+    //   }
+    //   else {
+    //     if (this.min.toString().length === 1) {
+    //       s += '%2201-Feb-20%20' + (this.hour-1) + ':0' + i + '%22 +'
+    //     }
+    //     else {
+    //       s += '%2201-Feb-20%20' + (this.hour-1) + ':' + i + '%22 +'
+    //     }
+    //   }
+    // }
+    s += '%2201-Feb-20%20' + (t.toString().split(":")[0]) + ':' + (t.toString().split(":")[1])  + '%22&size=10000&sort=_id'
+    // if (this.hour.toString().length === 1) {
+    //   s += '%2201-Feb-20%200' + (this.hour) + '%22&size=10000&sort=_id'
+    // }
+    // else {
+    //   s += '%2201-Feb-20%20' + (this.hour) + '%22&size=10000&sort=_id' 
+    // }
     fetch('http://158.108.33.58:9200/data_domain/_search?&q=' + s, {
       method: "get"
     })

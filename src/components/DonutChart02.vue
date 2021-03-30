@@ -89,7 +89,7 @@ export default {
         //   }
         // }
             for(var i in this.currentResult) {
-              console.log(this.currentResult[i])
+              // console.log(this.currentResult[i])
               if (this.currentResult[i]._source.Way === "->") {
                 if (!this.currentResult[i]._source.is_legit) {
                   this.sum += 1
@@ -97,7 +97,7 @@ export default {
                     this.dict[this.currentResult[i]._source.SrcIP] = 0
                   }
                   this.dict[this.currentResult[i]._source.SrcIP] += 1
-                  console.log(this.dict)
+                  // console.log(this.dict)
                   var sortable = [];
                   for (var sumip in this.dict) {
                       sortable.push([sumip, this.dict[sumip]]);
@@ -130,7 +130,7 @@ export default {
                 }
               }
             }
-            console.log(this.dict)
+            // console.log(this.dict)
             this.line.series[0].data[0].value = this.sum_IP1
             this.line.series[0].data[1].value = this.sum_IP2
             this.line.series[0].data[2].value = this.sum_IP3
@@ -155,7 +155,7 @@ export default {
               this.dict[this.last_result._source.SrcIP] = 0
             }
             this.dict[this.last_result._source.SrcIP] += 1
-            console.log(this.dict)
+            // console.log(this.dict)
             var sortable = [];
             for (var sumip in this.dict) {
                 sortable.push([sumip, this.dict[sumip]]);

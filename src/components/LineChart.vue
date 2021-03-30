@@ -2,7 +2,7 @@
   <div class="echarts">
         <b-row class="quriesTitle">
       <b-col md="12" class="text">
-    <h1>Number of Legit and DGA</h1>
+    <h1>Number of Legit and DGA (Last 15 Minutes)</h1>
       </b-col>
     </b-row>
     <IEcharts :option="line" />
@@ -43,7 +43,7 @@ export default {
     status: Boolean,
     currentDate: String,
     last_result: Object,
-    start_time: String
+    start_time: Object
   },
   data() {
     return {
@@ -69,9 +69,12 @@ export default {
         xAxis: {
           data: [' ']
         },
-        yAxis: { type: 'value' ,
-                  max: 50
-                },
+        yAxis: { 
+                type: 'value' ,
+                max: 3,
+                splitNumber: 3
+                // allowDecimals: false,
+              },
         dataZoom: [
           {
             type: 'inside',
@@ -98,13 +101,15 @@ export default {
             data: this.num_legit,
             type: 'line',
             areaStyle: {},
-            name: 'Legit'
+            name: 'Legit',
+            color: '#37A2FF'
           },
           {
             data: this.num_dga,
             type: 'line',
             areaStyle: {},
-            name: 'DGA'
+            name: 'DGA',
+            color: '#a90000'
           }
         ]
       }
@@ -113,27 +118,35 @@ export default {
   watch: {
     currentResult: {
       handler() {
-        var hour = this.start_time.split(":")[0]
-        var min = this.start_time.split(":")[1]
-        var sec = (this.start_time.split(":")[2]).split(".")[0]
+        var t = this.start_time
+        t = t.minusMinutes(15)
+        for (var k = 0;k < 900; k++) {
+          this.times.push(t.toString())
+          t = t.plusSeconds(1)
+          // con
+        }
+        console.log(this.times[this.times.length-1])
+        // var hour = this.start_time.split(":")[0]
+        // var min = this.start_time.split(":")[1]
+        // var sec = (this.start_time.split(":")[2]).split(".")[0]
   
-        // console.log(hour)
-        // console.log(min)
-        // console.log(sec)
-        // console.log(mil)
-        for (var s = parseInt(sec)+1; s <= 59;s++) {
-          this.times.push(this.pad(hour-1,2) + ':' + this.pad(min,2) + ':' + this.pad(s,2)) 
-        }
-        for (var m = parseInt(min)+1; m <= 59; m++) {
-          for (s = 0; s <= 59; s++) {
-            this.times.push(this.pad(hour-1,2) + ':' + this.pad(m,2) + ':' + this.pad(s,2))
-          }
-        }
-        for (m = 0; m <= 59; m++) {
-          for (s = 0; s <= 59; s++) {
-            this.times.push(this.pad(hour,2) + ':' + this.pad(m,2) + ':' + this.pad(s,2)) 
-          }
-        }
+        // // console.log(hour)
+        // // console.log(min)
+        // // console.log(sec)
+        // // console.log(mil)
+        // for (var s = parseInt(sec)+1; s <= 59;s++) {
+        //   this.times.push(this.pad(hour-1,2) + ':' + this.pad(min,2) + ':' + this.pad(s,2)) 
+        // }
+        // for (var m = parseInt(min)+1; m <= 59; m++) {
+        //   for (s = 0; s <= 59; s++) {
+        //     this.times.push(this.pad(hour-1,2) + ':' + this.pad(m,2) + ':' + this.pad(s,2))
+        //   }
+        // }
+        // for (m = 0; m <= 59; m++) {
+        //   for (s = 0; s <= 59; s++) {
+        //     this.times.push(this.pad(hour,2) + ':' + this.pad(m,2) + ':' + this.pad(s,2)) 
+        //   }
+        // }
         this.last_time = this.times[this.times.length-1]
         var LocalTime = require("@js-joda/core").LocalTime;
         this.last_time = LocalTime.parse(this.last_time).plusSeconds(1)
@@ -174,11 +187,16 @@ export default {
           // var Old_time = ''
           // var count = 0
           for (var j in this.times) {
+            this.sum_legit = 0
+            this.sum_dga = 0
             if (this.time_legit.includes(this.times[j])){
+              // console.log(this.time_legit.filter(x => x === this.times[j]).length)
               this.sum_legit ++
+              console.log(this.sum_legit)
               // count ++
             }
             else if (this.time_dga.includes(this.times[j])){
+              // console.log(this.time_dga.filter(x => x === this.times[j]).length)
               this.sum_dga ++
               // count ++
             }
@@ -233,10 +251,14 @@ export default {
     },
     last_result: {
       handler() {
+        
         // var LocalTime = require("@js-joda/core").LocalTime;
         this.last_time = this.last_time.plusSeconds(1)
+        // this.last_time = this.last_time.plusSeconds(1)
         // console.log(this.last_time)
         if (this.status) {
+          console.log(this.last_result._source.QueryName)
+          console.log(this.last_result._source.is_legit)
           // while (this.last_time < LocalTime.parse(this.last_result._source.timestamp.split(" ")[1].split(".")[0])) {
           //   this.times.shift()
           //   this.times.push(this.last_time.toString())
@@ -252,6 +274,8 @@ export default {
           //     console.log("Ready")
           // }, 1000);
           // }
+          this.sum_legit = 0
+          this.sum_dga = 0 
           if (this.last_result._source.is_legit) {
             this.sum_legit++
             this.num_legit.push(this.sum_legit)
@@ -265,18 +289,20 @@ export default {
           this.line.xAxis.data = this.times
           this.line.series[0].data = this.num_legit
           this.line.series[1].data = this.num_dga
-      }
-      else {
-        this.times.shift()
-        this.times.push(this.last_time.toString())
-        this.num_legit.push(this.sum_legit)
-        this.num_dga.push(this.sum_dga)
-        this.num_legit.shift()
-        this.num_dga.shift()
-        this.line.xAxis.data = this.times
-        this.line.series[0].data = this.num_legit
-        this.line.series[1].data = this.num_dga
-      }
+        }
+        else {
+          this.sum_legit = 0
+          this.sum_dga = 0 
+          this.times.shift()
+          this.times.push(this.last_time.minusSeconds(7).toString())
+          this.num_legit.push(this.sum_legit)
+          this.num_dga.push(this.sum_dga)
+          this.num_legit.shift()
+          this.num_dga.shift()
+          this.line.xAxis.data = this.times
+          this.line.series[0].data = this.num_legit
+          this.line.series[1].data = this.num_dga
+        }
       
       // console.log(this.currentResult)
 

@@ -73,6 +73,7 @@ export default {
         for (var i in this.currentResult) {
           if (this.currentResult[i]._source.Way === "->") {
             if (this.currentResult[i]._source.is_legit) {
+              // console.lo
               this.sum_legit++
             } 
             else {
@@ -80,7 +81,7 @@ export default {
             }
           }
         }
-        this.line.series[0].data[0].value = this.sum_legit-1
+        this.line.series[0].data[0].value = this.sum_legit
         this.line.series[0].data[1].value = this.sum_dga
         // if (this.status) {
         //   if (this.currentResult._source.Way === "<-") {
@@ -106,7 +107,7 @@ export default {
           else {
             this.sum_dga++
           }
-          this.line.series[0].data[0].value = this.sum_legit-1
+          this.line.series[0].data[0].value = this.sum_legit
           this.line.series[0].data[1].value = this.sum_dga
         }
       }
